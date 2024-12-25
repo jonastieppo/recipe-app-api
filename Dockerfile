@@ -18,6 +18,7 @@ RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
+    echo "running on development mode" && \
     then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \    
     rm -rf /tmp && \
