@@ -28,7 +28,6 @@ services:
       - POSTGRESS_DB=devdb
       - POSTGRESS_USER=devuser
       - POSTGRESS_PASSWORD=changeme
-      - POSTGRES_HOST_AUTH_METHOD=trust
     
 volumes:
   dev-db-data:
