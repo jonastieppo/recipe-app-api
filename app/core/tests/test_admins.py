@@ -14,7 +14,7 @@ class AdminTests(TestCase):
         """Create user and client."""
         self.client =  Client()
         self.admin_user =  get_user_model().objects.create_superuser(
-            email='admin@example.com'
+            email='admin@example.com',
             password='testpass123'
         )
         self.client.force_login(self.admin_user)
@@ -31,3 +31,10 @@ class AdminTests(TestCase):
 
         self.assertContains(res, self.user.name)
         self.assertContains(res, self.user.email)
+
+    def test_edit_user_page(self):
+        """Test user page works"""
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
