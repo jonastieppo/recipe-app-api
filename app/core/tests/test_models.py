@@ -60,7 +60,7 @@ class ModelTests(TestCase):
             'testpass123'
         )
 
-        title='Sample recipe NAME'
+        title = 'Sample recipe NAME'
 
         recipe = models.Recipe.objects.create(
             user=user,
