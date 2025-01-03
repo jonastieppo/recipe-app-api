@@ -116,7 +116,7 @@ class PrivateRecipeAPITests(TestCase):
         payload = {
             'title': 'Example recipe',
             'time_minutes': 5,
-            'price': Decimal(23.3),
+            'price': Decimal('20.0'),
         }
 
         res = self.client.post(RECIPES_URL, payload)
@@ -126,8 +126,7 @@ class PrivateRecipeAPITests(TestCase):
         # getting from db
 
         recipe = Recipe.objects.get(id=res.data['id'])
-
         for k in payload.keys():
-            self.assertEqual(recipe[k], payload[k])
+            self.assertEqual(getattr(recipe,k), payload[k])
 
         self.assertEqual(recipe.user, self.user)
