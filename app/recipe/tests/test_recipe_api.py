@@ -110,3 +110,24 @@ class PrivateRecipeAPITests(TestCase):
         serializer = RecipeDetailSerializer(recipe)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_create_recipe(self):
+        """Test creates recipe."""
+        payload = {
+            'title': 'Example recipe',
+            'time_minutes': 5,
+            'price': Decimal(23.3),
+        }
+
+        res = self.client.post(RECIPES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        # getting from db
+
+        recipe = Recipe.objects.get(id=res.data['id'])
+
+        for k in payload.keys():
+            self.assertEqual(recipe[k], payload[k])
+
+        self.assertEqual(recipe.user, self.user)
