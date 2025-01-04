@@ -153,7 +153,7 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(recipe.link, original_link)
         self.assertEqual(recipe.user, self.user)
 
-    def full_update_recipe(self):
+    def test_full_update_recipe(self):
         """Test the full update of the recipe"""
 
         recipe = create_recipe(
@@ -172,12 +172,15 @@ class PrivateRecipeAPITests(TestCase):
             'title': 'New Title',
             'link': 'http://example_2.com',
             'time_minutes': 10,
-            'price': Decimal(2.43)
+            'price': Decimal('2.43')
         }
 
         res = self.client.put(url, payload)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        recipe.refresh_from_db() #updating after db changes
+        recipe.refresh_from_db()  # updating after db changes
 
         for each_k in payload.keys():
-            self.assertEqual(recipe[each_k], payload[each_k])
+            if each_k == 'user':
+                self.assertEqual(getattr(recipe, each_k), self.user)
+            else:
+                self.assertEqual(getattr(recipe, each_k), payload[each_k])
