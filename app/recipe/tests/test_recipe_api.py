@@ -21,6 +21,9 @@ from recipe.serializers import (
 
 RECIPES_URL = reverse('recipe:recipe-list')
 
+def create_user(**params):
+    """Creates and return a new user"""
+    return get_user_model().objects.create_user(**params)
 
 def detail_url(recipe_id):
     """Creates and return a recipe detail urls"""
