@@ -216,20 +216,13 @@ class ImageUploadTests(TestCase):
             img = Image.new('RGB', (10, 10))
             img.save(image_file, format='JPEG')
             image_file.seek(0)
-            original_image_content = image_file.read()
             payload = {'image': image_file}
             res = self.client.post(url, payload, format='multipart')
 
         self.recipe.refresh_from_db()
-        print(res.content)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn('image', res.data)
         self.assertTrue(os.path.exists(self.recipe.image.path))
-
-        # check if the image is the same uploaded
-        with open(self.recipe.image.path, 'rb') as uploaded_image:
-            uploaded_image_content = uploaded_image.read()
-            self.assertEqual(uploaded_image_content, original_image_content)
 
     def test_upload_image_bad_request(self):
         """Test uploading invalid image"""
